@@ -1,0 +1,17 @@
+pandas>=2.2
+sqlalchemy>=2.0
+python-dotenv>=1.0
+
+# Postgres driver -- only needed once you switch ETL_DATABASE_URL/AGENT_DATABASE_URL
+# from sqlite:/// to postgresql:// (SQLAlchemy uses the stdlib sqlite3 module for
+# SQLite, no separate driver package required).
+psycopg2-binary>=2.9
+
+pytest>=8.0
+
+# Phase 3: the agent
+langchain-core>=0.3
+langchain-google-genai>=2.0
+
+# UI
+streamlit>=1.50

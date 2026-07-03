@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Set up environment
+        run: cp .env.example .env
+
+      - name: Run ETL pipeline
+        run: python main.py
+        # The test suite (test_schema_metadata, test_app) needs the actual
+        # database to exist before it can run -- the pipeline creates it.
+        # This also acts as a smoke test for the ETL itself.
+
+      - name: Run tests
+        run: |
+          pytest tests/ \
+            --ignore=tests/eval_questions.py \
+            -v \
+            --tb=short
+        # eval_questions.py is excluded: it calls the real Gemini API and
+        # needs a GOOGLE_API_KEY, which is not available in CI without a
+        # secret. It's meant to be run manually against the real API.
+        # Everything it tests (agent orchestration, retry logic, safety
+        # checks) is already covered by test_agent.py and test_app.py
+        # using the scripted fake LLM.

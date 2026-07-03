@@ -1,5 +1,5 @@
 
-![CI](https://github.com/Cody215/employee-sql-agent/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/Cody215/SQL-Database-Agent/.github/workflows/ci.yml/badge.svg)
 
 
 A natural-language-to-SQL system: messy CSV → cleaned, normalized Postgres-style
